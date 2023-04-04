@@ -6,11 +6,9 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
-    // If you use Prisma Migrate, specify a URL for the Prisma shadow database
-    // https://neon.tech/docs/guides/prisma/#configure-a-shadow-database-for-prisma-migrate
-    // shadowDatabaseUrl = env(“SHADOW_DATABASE_URL”)
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 // Necessary for Next auth
@@ -30,6 +28,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -38,6 +37,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model VerificationToken {
@@ -54,6 +55,8 @@ model User {
     email         String?    @unique
     emailVerified DateTime?
     image         String?
+    createdAt     DateTime   @default(now())
+    updatedAt     DateTime   @default(now()) @updatedAt
     accounts      Account[]
     sessions      Session[]
     deposits      Deposit[]
@@ -78,6 +81,8 @@ model Deposit {
     revenues      Revenue[]
     fromTransfers Transfer[]   @relation("from_Deposit")
     toTransfers   Transfer[]   @relation("to_Deposit")
+
+    @@index([uerId])
 }
 
 model Label {
@@ -93,6 +98,8 @@ model Label {
     revenues    Revenue[]
     transfers   Transfer[]
     budgets     Budget[]
+
+    @@index([uerId])
 }
 
 model Expense {
@@ -108,6 +115,9 @@ model Expense {
     updated_at  DateTime @default(now()) @updatedAt
     user        User     @relation(fields: [uerId], references: [id], onDelete: Cascade)
     deposit     Deposit  @relation(fields: [deposit_id], references: [id], onDelete: Cascade)
+
+    @@index([uerId])
+    @@index([deposit_id])
 }
 
 model Revenue {
@@ -123,6 +133,9 @@ model Revenue {
     updated_at  DateTime @default(now()) @updatedAt
     user        User     @relation(fields: [uerId], references: [id], onDelete: Cascade)
     deposit     Deposit  @relation(fields: [deposit_id], references: [id], onDelete: Cascade)
+
+    @@index([uerId])
+    @@index([deposit_id])
 }
 
 model Transfer {
@@ -141,6 +154,10 @@ model Transfer {
     user            User     @relation(fields: [uerId], references: [id], onDelete: Cascade)
     from_Deposit    Deposit  @relation("from_Deposit", fields: [from_Deposit_id], references: [id])
     to_Deposit      Deposit  @relation("to_Deposit", fields: [to_Deposit_id], references: [id])
+
+    @@index([uerId])
+    @@index([from_Deposit_id])
+    @@index([to_Deposit_id])
 }
 
 model Budget {
@@ -154,6 +171,8 @@ model Budget {
     created_at  DateTime @default(now())
     updated_at  DateTime @default(now()) @updatedAt
     user        User     @relation(fields: [uerId], references: [id], onDelete: Cascade)
+
+    @@index([uerId])
 }
 
 // Enums
