@@ -8,7 +8,10 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const { data } = api.deposit.getAll.useQuery();
-  console.log(data?.map((deposit) => deposit.name));
+  // const { data } = api.deposit.getAll.useQuery();
+  // const { data } = api.deposit.create.useQuery({});
+  // const { data } = api.deposit.update.useQuery();
+  // const { data } = api.deposit.delete.useQuery();
 
   return (
     <>
@@ -21,8 +24,10 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>Open Budget</h1>
 
         <div>
-          {data?.map((deposit) => (
-            <div key={deposit.id}>{deposit.name}</div>
+          { data?.map((deposit) => (
+            <div key={deposit.id}>
+              <a>{deposit.name}</a>
+            </div>
           ))}
         </div>
 
