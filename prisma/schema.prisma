@@ -69,7 +69,7 @@ model User {
 
 model Deposit {
     id            String       @id @default(cuid())
-    userId         String
+    userId        String
     deposit_type  depositTypes
     name          String
     description   String?
@@ -87,7 +87,7 @@ model Deposit {
 
 model Label {
     id          String     @id @default(cuid())
-    userId       String
+    userId      String
     label_type  labelTypes
     name        String
     description String?
@@ -97,16 +97,33 @@ model Label {
     expenses    Expense[]
     revenues    Revenue[]
     transfers   Transfer[]
-    budgets     Budget[]
+
+    @@index([userId])
+}
+
+model Budget {
+    id          String     @id @default(cuid())
+    userId      String
+    name        String
+    description String?
+    amount      Float
+    progress    Float
+    created_at  DateTime   @default(now())
+    updated_at  DateTime   @default(now()) @updatedAt
+    user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    expenses    Expense[]
+    revenues    Revenue[]
+    transfers   Transfer[]
 
     @@index([userId])
 }
 
 model Expense {
     id          String   @id @default(cuid())
-    userId       String
+    userId      String
     deposit_id  String
     label_ids   Label[]
+    budget_id   String?
     name        String
     description String?
     amount      Float
@@ -115,16 +132,19 @@ model Expense {
     updated_at  DateTime @default(now()) @updatedAt
     user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     deposit     Deposit  @relation(fields: [deposit_id], references: [id], onDelete: Cascade)
+    budget      Budget?  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@index([deposit_id])
+    @@index([budget_id])
 }
 
 model Revenue {
     id          String   @id @default(cuid())
-    userId       String
+    userId      String
     deposit_id  String
     label_ids   Label[]
+    budget_id   String?
     name        String
     description String?
     amount      Float
@@ -133,17 +153,20 @@ model Revenue {
     updated_at  DateTime @default(now()) @updatedAt
     user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     deposit     Deposit  @relation(fields: [deposit_id], references: [id], onDelete: Cascade)
+    budget      Budget?  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@index([deposit_id])
+    @@index([budget_id])
 }
 
 model Transfer {
     id              String   @id @default(cuid())
-    userId           String
+    userId          String
     from_Deposit_id String
     to_Deposit_id   String
     label_ids       Label[]
+    budget_id       String?
     name            String
     description     String?
     amount          Float
@@ -154,25 +177,12 @@ model Transfer {
     user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     from_Deposit    Deposit  @relation("from_Deposit", fields: [from_Deposit_id], references: [id])
     to_Deposit      Deposit  @relation("to_Deposit", fields: [to_Deposit_id], references: [id])
+    budget          Budget?  @relation(fields: [budget_id], references: [id], onDelete: Cascade)
 
     @@index([userId])
     @@index([from_Deposit_id])
     @@index([to_Deposit_id])
-}
-
-model Budget {
-    id          String   @id @default(cuid())
-    userId       String
-    label_ids   Label[]
-    name        String
-    description String?
-    amount      Float
-    progress    Float
-    created_at  DateTime @default(now())
-    updated_at  DateTime @default(now()) @updatedAt
-    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@index([userId])
+    @@index([budget_id])
 }
 
 // Enums
@@ -187,5 +197,4 @@ enum labelTypes {
     REVENUE
     EXPENSE
     TRANSFER
-    BUDGET
 }
