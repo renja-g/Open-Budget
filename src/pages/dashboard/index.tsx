@@ -30,7 +30,10 @@ const Dashboard = () => {
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={async () => await signOut({ callbackUrl: "/" })}>signOut</button>
+      <button onClick={() => (async () => {
+        await signOut({ callbackUrl: "/" });
+      })().catch(() => { })}>signOut</button>
+
     </div>
   );
 };
