@@ -8,7 +8,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const checkAuthentication = () => {
       if (sessionStatus === "unauthenticated") {
         // Centered toast
         toast.error("You must be signed in to view this page", {
@@ -42,7 +42,7 @@ const Dashboard = () => {
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={handleSignOut}>Sign Out</button>
+      <button onClick={void handleSignOut}>Sign Out</button>
     </div>
   );
 };
