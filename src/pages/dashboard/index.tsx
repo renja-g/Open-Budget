@@ -15,7 +15,11 @@ const Dashboard = () => {
           position: "top-center",
         });
 
-        await router.push("/");
+        try {
+          await router.push("/");
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
