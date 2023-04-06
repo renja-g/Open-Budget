@@ -31,23 +31,10 @@ const Dashboard = () => {
     return null;
   }
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: "/" })
-      .then(() => {
-        toast.success("Signed out successfully", {
-          position: "top-center",
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
   return (
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 };
