@@ -8,14 +8,18 @@ const Dashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (sessionStatus === "unauthenticated") {
-      // Centered toast
-      toast.error("You must be signed in to view this page", {
-        position: "top-center",
-      });
+    const checkAuthentication = async () => {
+      if (sessionStatus === "unauthenticated") {
+        // Centered toast
+        toast.error("You must be signed in to view this page", {
+          position: "top-center",
+        });
 
-      router.push("/");
-    }
+        await router.push("/");
+      }
+    };
+
+    checkAuthentication();
   }, [sessionStatus, router]);
 
   if (sessionStatus === "loading") {
@@ -39,7 +43,7 @@ const Dashboard = () => {
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={handleSignOut}>signOut</button>
+      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 };
