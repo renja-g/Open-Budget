@@ -1,5 +1,5 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { depositRouter } from "./routers/deposit";
+import { depositRouter } from "~/server/api/routers/deposit";
 
 /**
  * This is the primary router for your server.
