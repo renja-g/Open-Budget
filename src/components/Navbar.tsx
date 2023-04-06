@@ -67,7 +67,7 @@ const Navbar = () => {
           </Menu>
         )}
         {sessionStatus === 'unauthenticated' && (
-          <button className="ml-5 font-medium text-white hover:text-fuchsia-800 mr-4" onClick={() => signIn()}>
+          <button className="ml-5 font-medium text-white hover:text-fuchsia-800 mr-4" onClick={() => void signIn()}>
             Sign In
           </button>)}
       </div>
