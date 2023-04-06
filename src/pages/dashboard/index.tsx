@@ -26,14 +26,20 @@ const Dashboard = () => {
     return null;
   }
 
+  const handleSignOut = async () => {
+    try {
+      await signOut({ callbackUrl: "/" });
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={() => (async () => {
-        await signOut({ callbackUrl: "/" });
-      })().catch(() => { })}>signOut</button>
-
+      <button onClick={handleSignOut}>signOut</button>
     </div>
   );
 };
