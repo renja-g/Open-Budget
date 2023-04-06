@@ -34,13 +34,11 @@ const Dashboard = () => {
     return null;
   }
 
-  const handleSignOut = async () => {
-    try {
-      await signOut({ callbackUrl: "/" });
-    } catch (error) {
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/" }).catch((error) => {
       // Handle the error
       console.error(error);
-    }
+    });
   };
 
   return (
