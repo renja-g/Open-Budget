@@ -14,12 +14,7 @@ const Dashboard = () => {
         toast.error("You must be signed in to view this page", {
           position: "top-center",
         });
-
-        try {
-          await router.push("/");
-        } catch (error) {
-          console.error(error);
-        }
+        void router.push("/");
       }
     };
 
