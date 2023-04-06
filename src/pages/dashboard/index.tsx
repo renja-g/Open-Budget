@@ -30,7 +30,7 @@ const Dashboard = () => {
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={() => void signOut({ callbackUrl: "/" })}>signOut</button>
+      <button onClick={() => signOut({ callbackUrl: "/" }).then(() => router.push("/"))}>signOut</button>
     </div>
   );
 };
