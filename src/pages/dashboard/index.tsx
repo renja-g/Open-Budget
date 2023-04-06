@@ -32,17 +32,22 @@ const Dashboard = () => {
   }
 
   const handleSignOut = () => {
-    signOut({ callbackUrl: "/" }).catch((error) => {
-      // Handle the error
-      console.error(error);
-    });
+    signOut({ callbackUrl: "/" })
+      .then(() => {
+        toast.success("Signed out successfully", {
+          position: "top-center",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
     <div>
       <h1>Welcome to the Dashboard!</h1>
       <p>Hello {session.user.name}!</p>
-      <button onClick={void handleSignOut}>Sign Out</button>
+      <button onClick={handleSignOut}>Sign Out</button>
     </div>
   );
 };
