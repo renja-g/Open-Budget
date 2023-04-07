@@ -18,7 +18,7 @@ The goal of this project is to provide an easy to host fincial tracking applicat
 ### Assets
 * [TailwindCSS](https://tailwindcss.com/)
 * [Heroicons](https://heroicons.com/)
-* [Headless UI](https://headlessui.dev/) - Maybe switch to [Radix UI](https://www.radix-ui.com/) together with [Shadcn UI](https://ui.shadcn.com/)
+* [Headless UI](https://headlessui.dev/) - Would like to switch to [Radix UI](https://www.radix-ui.com/)
 
 ### Deployment
 * [Vercel](https://vercel.com/)
