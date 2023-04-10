@@ -1,8 +1,8 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import Navbar from "~/components/Navbar";
 import Sidebar from "~/components/Sidebar";
+import Navbar from "~/components/Navbar";
 
 import { api } from "~/utils/api";
 
@@ -14,8 +14,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Sidebar />
-      <Component {...pageProps} />
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1">
+          <Component {...pageProps} />
+        </div>
+      </div>
     </SessionProvider>
   );
 };
