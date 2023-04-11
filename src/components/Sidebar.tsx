@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 import {
   IoChevronBackSharp,
@@ -10,6 +12,7 @@ import {
   IoPersonSharp,
   IoShieldSharp,
   IoNotificationsSharp,
+  IoPersonAddSharp
 } from 'react-icons/io5';
 
 interface Menu {
@@ -21,7 +24,9 @@ interface Menu {
 }
 
 const Sidebar = () => {
+  const { data: session, status: sessionStatus } = useSession();
   const [open, setOpen] = useState(true);
+  const [avatarOpen, setAvatarOpen] = useState(false);
 
   const router = useRouter();
   const currentPath = router.pathname;
@@ -144,6 +149,35 @@ const Sidebar = () => {
             </div>
           ))}
         </div>
+        {/* Sidebar footer */}
+        <div className="flex items-center justify-between px-4 py-2">
+          {!session && sessionStatus === 'unauthenticated' && (
+            <div
+              className="flex cursor-pointer items-center space-x-2 border-2 border-gray-700 rounded-md px-2 py-1"
+              onClick={() => void signIn()}
+            >
+                <IoPersonAddSharp />
+              <span className="text-sm font-medium">Login</span>
+            </div>
+          )}
+          {session && sessionStatus === 'authenticated' && (
+            <div
+              className="flex cursor-pointer items-center space-x-2"
+              onClick={() => void signOut()}
+            >
+              <div className="relative h-8 w-8">
+                <Image
+                  src={session.user.image ?? '/default-avatar.png'}
+                  alt={'img'}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  className="rounded-full"
+                />
+              </div>
+              <span className={`${open ?'text-sm font-medium' : 'hidden'}`}>{session.user.name}</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -151,6 +185,5 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-// Things sthat should be done
-// 1. Add Avatar / Login
-// 2. Add Logout
+// -- TODO --
+// make the sign in button collapse when the sidebar is collapsed
