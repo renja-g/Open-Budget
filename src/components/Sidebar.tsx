@@ -12,13 +12,14 @@ import {
   IoPersonSharp,
   IoShieldSharp,
   IoNotificationsSharp,
-  IoPersonAddSharp
+  IoPersonAddSharp,
 } from 'react-icons/io5';
 
 interface Menu {
   name: string;
   icon: JSX.Element;
   link: string;
+  needAuth: boolean;
   children?: Menu[];
   active?: boolean;
 }
@@ -37,30 +38,35 @@ const Sidebar = () => {
       icon: <IoHomeSharp />,
       link: '/dashboard',
       active: currentPath === '/dashboard',
+      needAuth: true,
     },
     {
       name: 'Settings',
       icon: <IoSettingsSharp />,
       link: '/settings',
       active: currentPath.startsWith('/settings'),
+      needAuth: true,
       children: [
         {
           name: 'Profile',
           icon: <IoPersonSharp />,
           link: '/settings/profile',
           active: currentPath === '/settings/profile',
+          needAuth: true,
         },
         {
           name: 'Security',
           icon: <IoShieldSharp />,
           link: '/settings/security',
           active: currentPath === '/settings/security',
+          needAuth: true,
         },
         {
           name: 'Notifications',
           icon: <IoNotificationsSharp />,
           link: '/settings/notifications',
           active: currentPath === '/settings/notifications',
+          needAuth: true,
         },
       ],
     },
@@ -97,11 +103,29 @@ const Sidebar = () => {
         </div>
         {/* Sidebar menu */}
         <div className="flex-grow overflow-y-auto px-2 py-4">
-          {menus.map((menu, index) => (
-            <div key={index} className="mb-4">
-              {/* Link element */}
-              {menu.link ? (
-                <Link href={menu.link}>
+          {menus.map((menu, index) => {
+            // Hide menu item if user is not authenticated and menu item requires authentication
+            if (menu.needAuth && !session) {
+              return null;
+            }
+
+            return (
+              <div key={index} className="mb-4">
+                {/* Link element */}
+                {menu.link ? (
+                  <Link href={menu.link}>
+                    <div
+                      className={`flex cursor-pointer items-center rounded-lg px-4 py-2 hover:bg-gray-700 ${
+                        menu.active ? 'bg-gray-700' : ''
+                      }`}
+                    >
+                      {menu.icon}
+                      <span className={`${open ? 'ml-2' : 'hidden'}`}>
+                        {menu.name}
+                      </span>
+                    </div>
+                  </Link>
+                ) : (
                   <div
                     className={`flex cursor-pointer items-center rounded-lg px-4 py-2 hover:bg-gray-700 ${
                       menu.active ? 'bg-gray-700' : ''
@@ -112,71 +136,73 @@ const Sidebar = () => {
                       {menu.name}
                     </span>
                   </div>
-                </Link>
-              ) : (
-                <div
-                  className={`flex cursor-pointer items-center rounded-lg px-4 py-2 hover:bg-gray-700 ${
-                    menu.active ? 'bg-gray-700' : ''
-                  }`}
-                >
-                  {menu.icon}
-                  <span className={`${open ? 'ml-2' : 'hidden'}`}>
-                    {menu.name}
-                  </span>
-                </div>
-              )}
-              {/* Nested menu */}
-              {menu.children && (
-                <div
-                  className={`${
-                    open ? 'ml-8' : 'hidden'
-                  } mt-2 flex flex-col space-y-2`}
-                >
-                  {menu.children.map((child, index) => (
-                    <Link key={index} href={child.link}>
-                      <div
-                        className={`flex cursor-pointer items-center rounded-lg px-4 py-2 hover:bg-gray-700 ${
-                          menu.active ? 'bg-gray-700' : ''
-                        }`}
-                      >
-                        {child.icon}
-                        <span className="ml-2">{child.name}</span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+                {/* Nested menu */}
+                {menu.children && (
+                  <div
+                    className={`${
+                      open ? 'ml-8' : 'hidden'
+                    } mt-2 flex flex-col space-y-2`}
+                  >
+                    {menu.children.map((child, index) => {
+                      // Hide menu item if user is not authenticated and menu item requires authentication
+                      if (child.needAuth && !session) {
+                        return null;
+                      }
+
+                      return (
+                        <Link key={index} href={child.link}>
+                          <div
+                            className={`flex cursor-pointer items-center rounded-lg px-4 py-2 hover:bg-gray-700 ${
+                              menu.active ? 'bg-gray-700' : ''
+                            }`}
+                          >
+                            {child.icon}
+                            <span className="ml-2">{child.name}</span>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
         {/* Sidebar footer */}
-        <div className="flex items-center justify-between px-4 py-2">
-          {!session && sessionStatus === 'unauthenticated' && (
-            <div
-              className="flex cursor-pointer items-center space-x-2 border-2 border-gray-700 rounded-md px-2 py-1"
-              onClick={() => void signIn()}
-            >
+        <div className="px-2 py-4">
+          <div className="flex cursor-pointer items-center rounded-lg px-4 py-2 hover:bg-gray-700">
+            {!session && sessionStatus === 'unauthenticated' && (
+              <div
+                className="flex cursor-pointer items-center space-x-2"
+                onClick={() => void signIn()}
+              >
                 <IoPersonAddSharp />
-              <span className="text-sm font-medium">Login</span>
-            </div>
-          )}
-          {session && sessionStatus === 'authenticated' && (
-            <div
-              className="flex cursor-pointer items-center space-x-2"
-              onClick={() => void signOut()}
-            >
-              <div className="relative h-8 w-8">
-                <Image
-                  src={session.user.image ?? '/default-avatar.png'}
-                  alt={'img'}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  className="rounded-full"
-                />
+                <span className={`${open ? 'font-medium' : 'hidden'}`}>
+                  Sign in
+                </span>
               </div>
-              <span className={`${open ?'text-sm font-medium' : 'hidden'}`}>{session.user.name}</span>
-            </div>
-          )}
+            )}
+            {session && sessionStatus === 'authenticated' && (
+              <div
+                className="flex cursor-pointer items-center space-x-2"
+                onClick={() => void signOut()}
+              >
+                <div className="relative h-8 w-8">
+                  <Image
+                    src={session.user.image ?? '/default-avatar.png'}
+                    alt={'img'}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    className="rounded-full"
+                  />
+                </div>
+                <span className={`${open ? 'text-sm font-medium' : 'hidden'}`}>
+                  {session.user.name}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -184,6 +210,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-// -- TODO --
-// make the sign in button collapse when the sidebar is collapsed
