@@ -26,3 +26,6 @@ The goal of this project is to provide an easy to host fincial tracking applicat
 ### Database
 * [Planetscale](https://planetscale.com/)
 * [MySQL](https://www.mysql.com/)
+
+### Notes
+![Notes](./assets/Notes.png)
