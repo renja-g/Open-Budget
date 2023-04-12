@@ -8,10 +8,8 @@ import {
   IoChevronBackSharp,
   IoChevronForwardSharp,
   IoHomeSharp,
-  IoSettingsSharp,
-  IoPersonSharp,
-  IoShieldSharp,
-  IoNotificationsSharp,
+  IoHammerSharp,
+  IoGitBranch,
   IoPersonAddSharp,
 } from 'react-icons/io5';
 
@@ -32,6 +30,7 @@ const Sidebar = () => {
   const router = useRouter();
   const currentPath = router.pathname;
 
+  /*
   const menus: Menu[] = [
     {
       name: 'Dashboard',
@@ -66,6 +65,33 @@ const Sidebar = () => {
           icon: <IoNotificationsSharp />,
           link: '/settings/notifications',
           active: currentPath === '/settings/notifications',
+          needAuth: true,
+        },
+      ],
+    },
+  ];
+*/
+
+  const menus: Menu[] = [
+    {
+      name: 'Dashboard',
+      icon: <IoHomeSharp />,
+      link: '/dashboard',
+      active: currentPath === '/dashboard',
+      needAuth: true,
+    },
+    {
+      name: 'Testing',
+      icon: <IoHammerSharp />,
+      link: '/testing',
+      active: currentPath.startsWith('/testing'),
+      needAuth: true,
+      children: [
+        {
+          name: 'Deposit',
+          icon: <IoGitBranch />,
+          link: '/testing/deposit',
+          active: currentPath === '/testing/deposit',
           needAuth: true,
         },
       ],

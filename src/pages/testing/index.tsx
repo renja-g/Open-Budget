@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
-const Dashboard = () => {
+const Testing = () => {
   const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
 
@@ -33,10 +33,9 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1>Welcome to the Dashboard!</h1>
-      <p>Hello {session.user.name}!</p>
+      <h1>Welcome to the Testing!</h1>
     </div>
   );
 };
 
-export default Dashboard;
+export default Testing;
