@@ -4,6 +4,8 @@ Open Budget is an open source financ tracking application.
 <br>
 The goal of this project is to provide an easy to host fincial tracking application for personal use.
 
+### Notes
+![Notes](./assets/Notes.png)
 
 ## My T3 Stack
 [Create T3 App](https://create.t3.gg/)
@@ -26,6 +28,3 @@ The goal of this project is to provide an easy to host fincial tracking applicat
 ### Database
 * [Planetscale](https://planetscale.com/)
 * [MySQL](https://www.mysql.com/)
-
-### Notes
-![Notes](./assets/Notes.png)
