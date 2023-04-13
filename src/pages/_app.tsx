@@ -15,7 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <div className="flex">
-        <Sidebar /> {/* Sidebar width is 230px */}
+        <Sidebar />
         <div className="flex flex-1 ml-56">
           <Component {...pageProps} />
         </div>
