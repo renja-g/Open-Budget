@@ -36,16 +36,19 @@ export const depositRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        deposit_type: z.enum(["CURRENT", "CASH", "CREDIT", "OTHER"]),
-        name: z.string(),
-        description: z.string().optional(),
+        name: z.string().min(1).max(16),
+        description: z.string().min(1).max(100).optional(),
         balance: z.number(),
+        deposit_type: z.enum(["CURRENT", "CASH", "CREDIT", "OTHER"]),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const deposit = await ctx.prisma.deposit.create({
         data: {
-          ...input,
+          name: input.name,
+          description: input.description,
+          balance: input.balance,
+          deposit_type: input.deposit_type,
           userId: ctx.session.user.id,
         },
       });
