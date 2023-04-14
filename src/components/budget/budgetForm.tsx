@@ -2,13 +2,6 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -22,11 +15,10 @@ interface BudgetFormProps {
   name?: string;
   description?: string;
   amount?: number;
-  progress?: number;
 }
 
 export function BudgetForm(props: BudgetFormProps) {
-  const { name, description, amount, progress } = props;
+  const { name, description, amount } = props;
 
   return (
     <Dialog>
