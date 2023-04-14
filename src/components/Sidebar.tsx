@@ -25,7 +25,6 @@ interface Menu {
 const Sidebar = () => {
   const { data: session, status: sessionStatus } = useSession();
   const [open, setOpen] = useState(true);
-  const [avatarOpen, setAvatarOpen] = useState(false);
 
   const router = useRouter();
   const currentPath = router.pathname;
