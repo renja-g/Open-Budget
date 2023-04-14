@@ -1,6 +1,13 @@
-'use client';
-
-import * as React from 'react';
+import { Button } from '~/components/ui/button';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -10,18 +17,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '~/components/ui/select';
-import { Button } from '~/components/ui/button';
-import { Input } from '~/components/ui/input';
-import { Label } from '~/components/ui/label';
+import { type DepositType } from '~/types';
 
-export function DepositForm() {
+interface DepositFormProps {
+  name?: string;
+  description?: string;
+  balance?: string;
+  depositType?: DepositType;
+}
+
+export function DepositForm(props: DepositFormProps) {
+  const { name, description, balance, depositType } = props;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -41,6 +48,7 @@ export function DepositForm() {
               id="name"
               placeholder="Deposit name"
               className="col-span-3"
+              value={name}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -51,6 +59,7 @@ export function DepositForm() {
               id="description"
               placeholder="Deposit description"
               className="col-span-3"
+              value={description}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -61,13 +70,14 @@ export function DepositForm() {
               id="balance"
               placeholder="Deposit balance"
               className="col-span-3"
+              value={balance}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="depositType" className="text-right">
               Deposit Type
             </Label>
-            <Select>
+            <Select value={depositType}>
               <SelectTrigger className="col-span-3">
                 <SelectValue />
               </SelectTrigger>
