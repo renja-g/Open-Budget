@@ -1,4 +1,5 @@
 # Open Budget
+[![CodeFactor](https://www.codefactor.io/repository/github/renja-grotemeyer/open-budget/badge)](https://www.codefactor.io/repository/github/renja-grotemeyer/open-budget)
 
 Open Budget is an open source financ tracking application.
 <br>
